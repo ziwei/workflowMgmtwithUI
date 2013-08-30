@@ -1,6 +1,5 @@
 package eu.visioncloud.workflowWebUI;
 
-import obj.HandlerInfo;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -11,26 +10,24 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
+import eu.visioncloud.workflowengine.obj.HandlerInfo;
+
 public class HandlerForm extends Window{
 	private VerticalLayout vPanel = new VerticalLayout();
 	private TextField nameField = new TextField();
 	private TextField inputField = new TextField();
 	private TextField outputField = new TextField();
-	private Button btnModi = new Button("Modify");
+	private Button btnModi = new Button("Save");
 	private HandlerInfo handlerInfo = null;
 	public HandlerForm() {
-		this.setCaption("New Handler");
-		this.setHeight("-1px");
-		this.setWidth("-1px");
+		
 		initPanel();
-		nameField.setValue("Handler1");
-		inputField.setValue("default");
-		outputField.setValue("default");
+		nameField.setValue("");
+		inputField.setValue("");
+		outputField.setValue("");
 		this.addComponent(vPanel);
 	}
 	public HandlerForm(HandlerInfo hInfo) {
-		this.setHeight("-1px");
-		this.setWidth("-1px");
 		setHandlerInfo(hInfo);
 		initPanel();
 		nameField.setValue(hInfo.getName());
@@ -41,7 +38,9 @@ public class HandlerForm extends Window{
 	}
 	
 	private void initPanel(){
-		
+		this.setCaption("Handler Form");
+		this.setHeight("-1px");
+		this.setWidth("250px");
 		vPanel.setHeight("-1px");
 		vPanel.setWidth("-1px");
 		vPanel.addComponent(nameField);
@@ -66,6 +65,7 @@ public class HandlerForm extends Window{
 				// TODO Auto-generated method stub
 				setHandlerInfo(new HandlerInfo(nameField.getValue().toString(), inputField.getValue().toString(),
 						outputField.getValue().toString()));
+				close();
 			}
 		});
 	}

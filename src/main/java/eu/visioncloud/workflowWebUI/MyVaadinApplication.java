@@ -21,9 +21,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import matcher.TriggerMatcher;
 
-import obj.HandlerInfo;
 
 
 import com.vaadin.Application;
@@ -32,6 +30,9 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
+
+import eu.visioncloud.workflowengine.matcher.TriggerMatcher;
+import eu.visioncloud.workflowengine.obj.HandlerInfo;
 
 /**
  * The Application's "main" class
@@ -60,6 +61,7 @@ public class MyVaadinApplication extends Application
         
         mainComponent = new MainComponent(handlers);
         window.setContent(mainComponent);
+		setTheme("mytheme");
         
     }
     private Set<HandlerInfo> LoadHandlers() throws IOException{ //for debugging, change to load from NS later, update when client loads everytime

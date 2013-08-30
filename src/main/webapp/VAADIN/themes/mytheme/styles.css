@@ -1,0 +1,6 @@
+@import url(../reindeer/styles.css);
+
+.v-caption-my-style {
+	font-size: 18px;
+	background: #80ff80; /* pale green */
+}
