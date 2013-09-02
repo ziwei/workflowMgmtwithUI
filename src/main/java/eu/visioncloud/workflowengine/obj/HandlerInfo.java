@@ -15,27 +15,35 @@ public class HandlerInfo{
 private String name;
 private String inputExpr;
 private String outputExpr;
-private String newiExpr;
-private String newoExpr;
-private List<Attribute> inputAtoms;
-private List<Attribute> outputAtoms;
-private Map atoms;
+//appear
+private String a_inputExpr;
+private String a_outputExpr;
+private String a_newiExpr;
+private String a_newoExpr;
+private List<Attribute> a_inputAtoms;
+private List<Attribute> a_outputAtoms;
+private Map a_atoms;
+//disappear
+
+//constant
+
 private boolean acyclic;
 
 public HandlerInfo(){
 
 }
 public HandlerInfo(String n, String i, String o){
-	setAtoms(new HashMap());
 	setName(n);
 	setInputExpr(i);
 	setOutputExpr(o);
-	setInputAtoms(AtomExtractor(getInputExpr(), "ikv"));
-	setOutputAtoms(AtomExtractor(getOutputExpr(), "okv"));
-	Collections.sort(getInputAtoms(), new AttrComparator());
-	Collections.sort(getOutputAtoms(), new AttrComparator());
-	setNewiExpr(ExpressionFormatter(getInputAtoms(), getInputExpr()));
-	setNewoExpr(ExpressionFormatter(getOutputAtoms(), getOutputExpr()));
+	//appear
+	setAppearAtoms(new HashMap());
+	setAppearInputAtoms(AtomExtractor(getAppearInputExpr(), "ikv", a_atoms));
+	setAppearOutputAtoms(AtomExtractor(getAppearOutputExpr(), "okv", a_atoms));
+	Collections.sort(getAppearInputAtoms(), new AttrComparator());
+	Collections.sort(getAppearOutputAtoms(), new AttrComparator());
+	setAppearNewiExpr(ExpressionFormatter(getAppearInputAtoms(), getAppearInputExpr()));
+	setAppearNewoExpr(ExpressionFormatter(getAppearOutputAtoms(), getAppearOutputExpr()));
 	setAcyclic(true);
 }
 public boolean isAcyclic() {
@@ -55,44 +63,59 @@ public String getInputExpr() {
 }
 public void setInputExpr(String inputExpr) {
 	this.inputExpr = inputExpr;
+	setAppearInputExpr(inputExpr.split(",")[0].substring(8, inputExpr.split(",")[0].length()-1));
+	//System.out.println(getAppearInputExpr());
 }
 public String getOutputExpr() {
 	return outputExpr;
 }
 public void setOutputExpr(String outputExpr) {
 	this.outputExpr = outputExpr;
+	setAppearOutputExpr(outputExpr.split(",")[0].substring(8, outputExpr.split(",")[0].length()-1));
 }
-public Map getAtoms() {
-	return atoms;
+public String getAppearInputExpr() {
+	return a_inputExpr;
 }
-public void setAtoms(Map atoms) {
-	this.atoms = atoms;
+public void setAppearInputExpr(String inputExpr) {
+	this.a_inputExpr = inputExpr;
 }
-public String getNewoExpr() {
-	return newoExpr;
+public String getAppearOutputExpr() {
+	return a_outputExpr;
 }
-public void setNewoExpr(String newoExpr) {
-	this.newoExpr = newoExpr;
+public void setAppearOutputExpr(String outputExpr) {
+	this.a_outputExpr = outputExpr;
 }
-public List<Attribute> getOutputAtoms() {
-	return outputAtoms;
+public Map getAppearAtoms() {
+	return a_atoms;
 }
-public void setOutputAtoms(List<Attribute> outputAtoms) {
-	this.outputAtoms = outputAtoms;
+public void setAppearAtoms(Map atoms) {
+	this.a_atoms = atoms;
 }
-public List<Attribute> getInputAtoms() {
-	return inputAtoms;
+public String getAppearNewoExpr() {
+	return a_newoExpr;
 }
-public void setInputAtoms(List<Attribute> inputAtoms) {
-	this.inputAtoms = inputAtoms;
+public void setAppearNewoExpr(String newoExpr) {
+	this.a_newoExpr = newoExpr;
 }
-public String getNewiExpr() {
-	return newiExpr;
+public List<Attribute> getAppearOutputAtoms() {
+	return a_outputAtoms;
 }
-public void setNewiExpr(String newiExpr) {
-	this.newiExpr = newiExpr;
+public void setAppearOutputAtoms(List<Attribute> outputAtoms) {
+	this.a_outputAtoms = outputAtoms;
 }
-public List<Attribute> AtomExtractor (String expr, String flag){
+public List<Attribute> getAppearInputAtoms() {
+	return a_inputAtoms;
+}
+public void setAppearInputAtoms(List<Attribute> inputAtoms) {
+	this.a_inputAtoms = inputAtoms;
+}
+public String getAppearNewiExpr() {
+	return a_newiExpr;
+}
+public void setAppearNewiExpr(String newiExpr) {
+	this.a_newiExpr = newiExpr;
+}
+public List<Attribute> AtomExtractor (String expr, String flag, Map atoms){
 	List<Attribute> l = new ArrayList();
 	expr = expr.replaceAll("'\\('|'\\)'", "");//distinguish () in logical expr and regex as '(' + ')'
 	String exprList[] = expr.split("&&|\\|\\|");

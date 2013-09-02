@@ -88,7 +88,7 @@ public class MainComponent extends CustomComponent {
 
 	private Set<HandlerInfo> handlers;
 	// private Set<HandlerInfo> selectedHandlers = new HashSet<HandlerInfo>();
-
+	private byte[] imageByteArray;
 	private static final Object CAPTION_PROPERTY = "caption";
 	/**
 	 * 
@@ -419,12 +419,13 @@ public class MainComponent extends CustomComponent {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-					TriggerMatcher.TriggerMatch(selectedHandlers());
-					Embedded newPlot = new Embedded(null, getImageResource());
-					newPlot.setHeight("-1px");
-					newPlot.setWidth("-1px");
-					mainTab.addTab(newPlot, getTime()).setClosable(true);
-					mainTab.setSelectedTab(newPlot);			
+				imageByteArray = TriggerMatcher
+						.TriggerMatch(selectedHandlers());
+				Embedded newPlot = new Embedded(null, getImageResource());
+				newPlot.setHeight("-1px");
+				newPlot.setWidth("-1px");
+				mainTab.addTab(newPlot, getTime()).setClosable(true);
+				mainTab.setSelectedTab(newPlot);
 			}
 
 		});
@@ -449,8 +450,9 @@ public class MainComponent extends CustomComponent {
 
 	private StreamResource getImageResource() {
 		StreamSource imagesource = new MyImageSource();
-		StreamResource imageresource = new StreamResource(imagesource,
-				"plot.png", this.getApplication());
+		StreamResource imageresource = new StreamResource(imagesource, "",
+				this.getApplication());
+		imageresource.setMIMEType("image/png");
 		imageresource.setCacheTime(0);
 		return imageresource;
 	}
@@ -520,30 +522,31 @@ public class MainComponent extends CustomComponent {
 	}
 
 	class MyImageSource implements StreamResource.StreamSource {
-		ByteArrayOutputStream imagebuffer = null;
+		// ByteArrayOutputStream imagebuffer = null;
 
 		@Override
 		public InputStream getStream() {
 			/* Create an image and draw something on it. */
-			BufferedImage image = null;
-			try {
-				image = ImageIO.read(new URL(
-						"file:///home/ziwei/workspace/workflowWebUI/plot.png"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-				/* Write the image to a buffer. */
-				imagebuffer = new ByteArrayOutputStream();
-				ImageIO.write(image, "png", imagebuffer);
-
-				/* Return a stream from the buffer. */
-				return new ByteArrayInputStream(imagebuffer.toByteArray());
-			} catch (IOException e) {
-				return null;
-			}
+			// BufferedImage image = null;
+			// try {
+			// image = ImageIO.read(new URL(
+			// "file:///home/ziwei/workspace/workflowWebUI/plot.png"));
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			//
+			// try {
+			// /* Write the image to a buffer. */
+			// imagebuffer = new ByteArrayOutputStream();
+			// ImageIO.write(image, "png", imagebuffer);
+			//
+			// /* Return a stream from the buffer. */
+			// return new ByteArrayInputStream(imagebuffer.toByteArray());
+			// } catch (IOException e) {
+			// return null;
+			// }
+			return new ByteArrayInputStream(imageByteArray);
 		}
 	}
 

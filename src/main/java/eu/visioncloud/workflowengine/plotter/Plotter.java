@@ -28,12 +28,12 @@ public class Plotter {
 			 if (hi.isAcyclic() == true){
 				 System.out.println("expr "+hi.getInputExpr());
 				 if(hi.getName().equals("Notification"))
-					 gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Input>Appearance("+Format(hi.getInputExpr())+")|<Output>"+Format(hi.getOutputExpr())+"}\"]");
+					 gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Input>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 				 else
-					 gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Input>Appearance("+Format(hi.getInputExpr())+")|<Output>[same]Appearance("+Format(hi.getOutputExpr())+")}\"]");
+					 gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Input>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 			 }
 			 else {
-				 gv.add(hi.getName()+"[color=red label=\"<Handler>"+hi.getName()+"|{<Input>Appearance("+Format(hi.getInputExpr())+")|<Output>[same]Appearance("+Format(hi.getOutputExpr())+"}\"]");
+				 gv.add(hi.getName()+"[color=red label=\"<Handler>"+hi.getName()+"|{<Input>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 			 }
 		 }
 	 }

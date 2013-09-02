@@ -28,7 +28,7 @@ import eu.visioncloud.workflowengine.plotter.Plotter;
 
 public class TriggerMatcher {
 
-	public static void TriggerMatch(Set<HandlerInfo> handlers) {
+	public static byte[] TriggerMatch(Set<HandlerInfo> handlers) {
 		// int NUMBER = 5;
 		// TODO Auto-generated method stub
 		// ExpressionMatcher
@@ -44,9 +44,9 @@ public class TriggerMatcher {
 						+ to.getName());
 				Map result = MatchExpr(from, to, em);
 				System.out.println("Original Output: " + from.getOutputExpr());
-				System.out.println("Dictionary: " + from.getAtoms());
-				System.out.println("Disjunctive Output: "
-						+ em.DNFTransfer(from.getNewoExpr()));
+				//System.out.println("Dictionary: " + from.getAtoms());
+				//System.out.println("Disjunctive Output: "
+						//+ em.DNFTransfer(from.getNewoExpr()));
 				// System.out.println(result);
 				if (null != result) {
 					if (result.containsValue(0) || result.containsValue(1)) {
@@ -63,8 +63,8 @@ public class TriggerMatcher {
 		// System.out.println(cycles);
 		plotter.VerticesToDOT();
 		plotter.EdgesToDOT();
-		plotter.ExportDot();
-
+		//plotter.ExportDot();
+		return plotter.ImageByteArray();
 		// List<GraphPath> lPaths = gg.getPaths(handlers.get(0),
 		// handlers.get(1));
 		// for (GraphPath<HandlerInfo, TransitionInfo> gpl : lPaths){
@@ -99,10 +99,10 @@ public class TriggerMatcher {
 	public static Map MatchExpr(HandlerInfo handlerFrom, HandlerInfo handlerTo,
 			ExpressionMatcher em) {
 		try {
-			Formula[] axioms = em.AxiomsGen(handlerFrom.getOutputAtoms(),
-					handlerTo.getInputAtoms());
-			return em.Prove(axioms, handlerFrom.getNewoExpr(),
-					handlerTo.getNewiExpr());
+			Formula[] axioms = em.AxiomsGen(handlerFrom.getAppearOutputAtoms(),
+					handlerTo.getAppearInputAtoms());
+			return em.Prove(axioms, handlerFrom.getAppearNewoExpr(),
+					handlerTo.getAppearNewiExpr());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
