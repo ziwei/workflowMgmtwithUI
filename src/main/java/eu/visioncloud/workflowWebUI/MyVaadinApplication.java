@@ -15,24 +15,16 @@
  */
 package eu.visioncloud.workflowWebUI;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.vaadin.Application;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 
-import eu.visioncloud.storlet.common.StorletException;
-import eu.visioncloud.storlet.common.Trigger;
-import eu.visioncloud.storlet.common.Utils;
-import eu.visioncloud.workflowengine.matcher.TriggerMatcher;
+import eu.visioncloud.cci.client.*;
+import eu.visioncloud.workflowengine.obj.Trigger;
 import eu.visioncloud.workflowengine.obj.HandlerInfo;
 
 /**
@@ -42,18 +34,21 @@ import eu.visioncloud.workflowengine.obj.HandlerInfo;
 public class MyVaadinApplication extends Application {
 	private Window window;
 	private MainComponent mainComponent;
-
+	private static ClientInterface oClient;
 	private Set<HandlerInfo> handlers;
-
+	static {
+		String storageServiceUrl = "";
+		oClient = new CdmiRestClient(storageServiceUrl);
+	}
 	@Override
 	public void init() {
-		window = new Window("My Vaadin Application");
+		window = new Window("Workflow Management Service");
 
 		setMainWindow(window);
 
 		try {
-			handlers = LoadHandlers();
-		} catch (IOException | StorletException e) {
+			handlers = LoadLocalHandlers();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -64,7 +59,7 @@ public class MyVaadinApplication extends Application {
 
 	}
 
-	private Set<HandlerInfo> LoadHandlers() throws IOException, StorletException{ //for debugging, change to load from NS later, update when client loads everytime
+	private Set<HandlerInfo> LoadLocalHandlers() throws IOException{ //for debugging, change to load from NS later, update when client loads everytime
 
 		Set<HandlerInfo> handlers = new HashSet<HandlerInfo>();
 		//for (int i = 1; i <= num; ++i){
@@ -75,11 +70,11 @@ public class MyVaadinApplication extends Application {
 		byte[] buff = new byte[(int) in.length()];
 		in.readFully(buff);
 		String value = new String(buff);
-		System.out.println(Utils.jsonUnEscape(value));
+		System.out.println(Trigger.jsonUnEscape(value));
 				Trigger[] triggers = Trigger.createTriggers(value);
 				for (Trigger trigger : triggers){
 				//System.out.println("Trigger: " + trigger.getTriggerEvaluator());
-				System.out.println("Output: " + trigger.getOutputEvaluator());
+				//System.out.println("Output: " + trigger.getOutputEvaluator());
 				handlers.add(new HandlerInfo(trigger.getHandlerID(), trigger.getTriggerEvaluator(), trigger.getOutputEvaluator()));
 				//}
 				//br.readLine();
@@ -90,6 +85,12 @@ public class MyVaadinApplication extends Application {
 		//}
 		//handlers.add(new HandlerInfo("ImageConverting.handler1", "'('\"FileType\"=\"'Image'\"')'&&'('\"Format\"~\"'JPEG|BMP|GIF'\"')'", "'('\"Format\"=\"'PNG'\"')'"));
 		//handlers.add(new HandlerInfo("TextConverting.handler1", "'('\"FileType\"=\"'Text'\"')'&&'('\"Format\"~\"'txt|doc|odt'\"')'", "'('\"Format\"=\"'pdf'\"')'"));
+		return handlers;
+	}
+	
+	private Set<HandlerInfo> LoadHandlers() throws ContentCentricException {
+		Set<HandlerInfo> handlers = new HashSet<HandlerInfo>();
+		oClient.queryEquivalentAware("equivalenceId", "objId", "tenId", "contId"); //how to use it for query?
 		return handlers;
 	}
 }

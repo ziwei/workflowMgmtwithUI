@@ -27,8 +27,6 @@ public class ValueMatcher {
 		//String notImplies = null;
 		if (output.getOperator().equals("=")){
 			if (input.getOperator().equals("=")){
-				if (output.getValue().equals("PNG")&&input.getValue().equals("PNG"))
-					System.out.print("PNGPNGPNGPNGPNGPGNPGNPGNPGNPGNPGN");
 				return output.getValue().equals(input.getValue()) ? strongImp : notImplies;
 			}
 			else if (input.getOperator().equals(">")){
@@ -203,8 +201,8 @@ public class ValueMatcher {
 		String rLower = null;
 		if (null != rightLow)
 			rLower = LowerBoundary(rightLow.getOperator(), rightLow.getValue());
-		System.out.println("lUpper " + lUpper);
-		System.out.println("rLower " + rLower);
+		//System.out.println("lUpper " + lUpper);
+		//System.out.println("rLower " + rLower);
 		if (sa.getOperator().equals("=")){
 			if ((null != leftHigh && null != rightLow) && ValueMatcher.ValueMatch(leftHigh, rightLow).equals(leftHigh.getId()+"->("+rightLow.getId()+")"))
 				return sa.getId();

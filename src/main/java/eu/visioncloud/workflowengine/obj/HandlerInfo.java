@@ -10,163 +10,122 @@ import java.util.Map;
 //import java.util.regex.Pattern;
 import java.util.regex.Pattern;
 
-public class HandlerInfo{
+public class HandlerInfo {
 
-private String name;
-private String inputExpr;
-private String outputExpr;
-//appear
-private String a_inputExpr;
-private String a_outputExpr;
-private String a_newiExpr;
-private String a_newoExpr;
-private List<Attribute> a_inputAtoms;
-private List<Attribute> a_outputAtoms;
-private Map a_atoms;
-//disappear
+	private String name;
+	private String inputExpr;
+	private String outputExpr;
+	// appear
+	String a_inputExpr;
+	String a_outputExpr;
+	private EvalConstruct appear;
 
-//constant
+	// disappear
+	String d_inputExpr;
+	String d_outputExpr;
+	private EvalConstruct disappear;
+	// constant
+	String c_inputExpr;
+	String c_outputExpr;
+	private EvalConstruct constant;
 
-private boolean acyclic;
+	private boolean acyclic;
 
-public HandlerInfo(){
+	public HandlerInfo() {
 
-}
-public HandlerInfo(String n, String i, String o){
-	setName(n);
-	setInputExpr(i);
-	setOutputExpr(o);
-	//appear
-	setAppearAtoms(new HashMap());
-	setAppearInputAtoms(AtomExtractor(getAppearInputExpr(), "ikv", a_atoms));
-	setAppearOutputAtoms(AtomExtractor(getAppearOutputExpr(), "okv", a_atoms));
-	Collections.sort(getAppearInputAtoms(), new AttrComparator());
-	Collections.sort(getAppearOutputAtoms(), new AttrComparator());
-	setAppearNewiExpr(ExpressionFormatter(getAppearInputAtoms(), getAppearInputExpr()));
-	setAppearNewoExpr(ExpressionFormatter(getAppearOutputAtoms(), getAppearOutputExpr()));
-	setAcyclic(true);
-}
-public boolean isAcyclic() {
-	return acyclic;
-}
-public void setAcyclic(boolean acyclic) {
-	this.acyclic = acyclic;
-}
-public String getName() {
-	return name;
-}
-public void setName(String name) {
-	this.name = name;
-}
-public String getInputExpr() {
-	return inputExpr;
-}
-public void setInputExpr(String inputExpr) {
-	this.inputExpr = inputExpr;
-	setAppearInputExpr(inputExpr.split(",")[0].substring(8, inputExpr.split(",")[0].length()-1));
-	//System.out.println(getAppearInputExpr());
-}
-public String getOutputExpr() {
-	return outputExpr;
-}
-public void setOutputExpr(String outputExpr) {
-	this.outputExpr = outputExpr;
-	setAppearOutputExpr(outputExpr.split(",")[0].substring(8, outputExpr.split(",")[0].length()-1));
-}
-public String getAppearInputExpr() {
-	return a_inputExpr;
-}
-public void setAppearInputExpr(String inputExpr) {
-	this.a_inputExpr = inputExpr;
-}
-public String getAppearOutputExpr() {
-	return a_outputExpr;
-}
-public void setAppearOutputExpr(String outputExpr) {
-	this.a_outputExpr = outputExpr;
-}
-public Map getAppearAtoms() {
-	return a_atoms;
-}
-public void setAppearAtoms(Map atoms) {
-	this.a_atoms = atoms;
-}
-public String getAppearNewoExpr() {
-	return a_newoExpr;
-}
-public void setAppearNewoExpr(String newoExpr) {
-	this.a_newoExpr = newoExpr;
-}
-public List<Attribute> getAppearOutputAtoms() {
-	return a_outputAtoms;
-}
-public void setAppearOutputAtoms(List<Attribute> outputAtoms) {
-	this.a_outputAtoms = outputAtoms;
-}
-public List<Attribute> getAppearInputAtoms() {
-	return a_inputAtoms;
-}
-public void setAppearInputAtoms(List<Attribute> inputAtoms) {
-	this.a_inputAtoms = inputAtoms;
-}
-public String getAppearNewiExpr() {
-	return a_newiExpr;
-}
-public void setAppearNewiExpr(String newiExpr) {
-	this.a_newiExpr = newiExpr;
-}
-public List<Attribute> AtomExtractor (String expr, String flag, Map atoms){
-	List<Attribute> l = new ArrayList();
-	expr = expr.replaceAll("'\\('|'\\)'", "");//distinguish () in logical expr and regex as '(' + ')'
-	String exprList[] = expr.split("&&|\\|\\|");
-	for(String kvpExpr : exprList){
-		//System.out.println("kvpExpr "+kvpExpr);
-		String id = flag+l.size();
-		String kvp[] = kvpExpr.split("\"");
-		if (kvp.length == 4){
-			if (kvp[3].startsWith("'"))
-				l.add(new Attribute(id, kvp[1],kvp[2],kvp[3].substring(1, kvp[3].length()-1)));
-			else
-				l.add(new SpecAttribute(id,kvp[1],kvp[2],kvp[3]));
-		}
-		else if (kvp.length == 2){
-			//System.out.println("enter");
-			l.add(new Attribute(id,kvp[1],"ALL",""));
-		}
-		atoms.put(id, kvpExpr);
-		//System.out.println("Corrrrrect? " + kvpExpr);
 	}
-	
-	//System.out.println(l.get(0).id+l.get(1).id+l.get(2).id);
-	return l;
-}
-public String ExpressionFormatter(List<Attribute> kvs, String expr){
-	for (Attribute attr : kvs){
-		String kv;
-		if (attr.getOperator().equals("ALL")){
-			//System.out.println("Corrrrrect? " + expr);
-			kv= "\""+attr.getKey()+"\"";
-		}
-		else{
-			if (attr.getClass().equals(SpecAttribute.class)){
-				kv="\""+attr.getKey()+"\""+attr.getOperator()+"\""+attr.getValue()+"\"";
-			}
-			else
-				kv="\""+attr.getKey()+"\""+attr.getOperator()+"\"'"+attr.getValue()+"'\"";
-			//System.out.println("kv " + kv);
-		}
-			
-		//System.out.println("kv "+ Pattern.quote(kv));
-		String atom = attr.getId();
-		if (kv.contains("Quality")){
-			//System.out.println("error kv "+ kv);
-			//System.out.println("expr kv "+ Pattern.quote(kv));
-			//System.out.println("eerror atom "+ atom);
-			}
-		expr = expr.replaceAll(Pattern.quote(kv), atom); //literally escapping
-		//expr = expr.replaceAll(kv, atom);
+
+	public HandlerInfo(String n, String i, String o) {
+		setName(n);
+		setInputExpr(i);
+		setOutputExpr(o);
+		// appear
+
+		setAppear(new EvalConstruct(a_inputExpr, a_outputExpr));
+
+		// disappear
+
+		setDisappear(new EvalConstruct(d_inputExpr, d_outputExpr));
+
+		// constant
+
+		setConstant(new EvalConstruct(c_inputExpr, c_outputExpr));
+
+		setAcyclic(true);
 	}
-	expr = expr.replaceAll("'\\('", "\\(").replaceAll("'\\)'", "\\)");
-	return expr;
-}
+
+	public boolean isAcyclic() {
+		return acyclic;
+	}
+
+	public void setAcyclic(boolean acyclic) {
+		this.acyclic = acyclic;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getInputExpr() {
+		return inputExpr;
+	}
+
+	public void setInputExpr(String inputExpr) {
+		this.inputExpr = inputExpr.replaceAll("\\s", "");
+		String[] evals = this.inputExpr.split(",");
+		for (String eval : evals) {
+			if (eval.startsWith("appear"))
+				a_inputExpr = eval.substring(8, eval.length() - 1);
+			else if (eval.startsWith("disappear"))
+				d_inputExpr = eval.substring(11, eval.length() - 1);
+			else if (eval.startsWith("constant"))
+				c_inputExpr = eval.substring(10, eval.length() - 1);
+		}// System.out.println(getAppearInputExpr());
+	}
+
+	public String getOutputExpr() {
+		return outputExpr;
+	}
+
+	public void setOutputExpr(String outputExpr) {
+		this.outputExpr = outputExpr.replaceAll("\\s", "");
+		String[] evals = this.outputExpr.split(",");
+		for (String eval : evals) {
+			if (eval.startsWith("appear"))
+				a_outputExpr = eval.substring(8, eval.length() - 1);
+			else if (eval.startsWith("disappear"))
+				d_outputExpr = eval.substring(11, eval.length() - 1);
+			else if (eval.startsWith("constant"))
+				c_outputExpr = eval.substring(10, eval.length() - 1);
+		}// System.out.println(getAppearInputExpr());
+	}
+
+	public EvalConstruct getAppear() {
+		return appear;
+	}
+
+	public void setAppear(EvalConstruct appear) {
+		this.appear = appear;
+	}
+
+	public EvalConstruct getDisappear() {
+		return disappear;
+	}
+
+	public void setDisappear(EvalConstruct disappear) {
+		this.disappear = disappear;
+	}
+
+	public EvalConstruct getConstant() {
+		return constant;
+	}
+
+	public void setConstant(EvalConstruct constant) {
+		this.constant = constant;
+	}
+
 }

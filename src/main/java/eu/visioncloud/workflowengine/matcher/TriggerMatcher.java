@@ -21,10 +21,10 @@ import java.util.regex.*;
 
 import org.jgrapht.GraphPath;
 
+import eu.visioncloud.workflowengine.obj.EvalConstruct;
 import eu.visioncloud.workflowengine.obj.HandlerInfo;
 import eu.visioncloud.workflowengine.obj.TransitionInfo;
 import eu.visioncloud.workflowengine.plotter.Plotter;
-
 
 public class TriggerMatcher {
 
@@ -40,30 +40,39 @@ public class TriggerMatcher {
 		gg.GenVertices(handlers);
 		for (HandlerInfo from : handlers) {
 			for (HandlerInfo to : handlers) {
-				System.out.println("From " + from.getName() + " To "
-						+ to.getName());
-				Map result = MatchExpr(from, to, em);
-				System.out.println("Original Output: " + from.getOutputExpr());
-				//System.out.println("Dictionary: " + from.getAtoms());
-				//System.out.println("Disjunctive Output: "
-						//+ em.DNFTransfer(from.getNewoExpr()));
+				// System.out.println("From " + from.getName() + " To "
+				// + to.getName());
+				Map appearResult = MatchExpr(from.getAppear(), to.getAppear(),
+						em);
+				Map disappearResult = MatchExpr(from.getDisappear(),
+						to.getDisappear(), em);
+				Map constantResult = MatchExpr(from.getConstant(),
+						to.getConstant(), em);
+				// System.out.println("Original Output: " +
+				// from.getOutputExpr());
+				// System.out.println("Dictionary: " + from.getAtoms());
+				// System.out.println("Disjunctive Output: "
+				// + em.DNFTransfer(from.getNewoExpr()));
 				// System.out.println(result);
-				if (null != result) {
-					if (result.containsValue(0) || result.containsValue(1)) {
-						gg.GenEdges(from, to, new TransitionInfo(from, to,
-								result));
-					}
-					TriggerDisplay(result);
+				Map result = new HashMap();
+				if (appearResult != null)
+					result.putAll(appearResult);
+				if (disappearResult != null)
+					result.putAll(disappearResult);
+				if (constantResult != null)
+					result.putAll(constantResult);
+				if (result.containsValue(0) || result.containsValue(1)) {
+					gg.GenEdges(from, to, new TransitionInfo(from, to,
+							result));
 				}
-				System.out.println();
 			}
 		}
 		// gg.ExportDot();
-		// List cycles = gg.CycleDetection();
+		List cycles = gg.CycleDetection();
 		// System.out.println(cycles);
 		plotter.VerticesToDOT();
 		plotter.EdgesToDOT();
-		//plotter.ExportDot();
+		// plotter.ExportDot();
 		return plotter.ImageByteArray();
 		// List<GraphPath> lPaths = gg.getPaths(handlers.get(0),
 		// handlers.get(1));
@@ -72,6 +81,18 @@ public class TriggerMatcher {
 		// System.out.print(ti.getFrom().getName()+"->"+ti.getTo().getName()+" ");
 		// System.out.println();
 		// }
+	}
+
+	private static int CheckReslt(Map result) {
+		if (null != result) {
+			if (result.containsValue(0)) {
+				return 0;
+			} else if (result.containsValue(1)) {
+				return 1;
+			} else
+				return 2;
+		} else
+			return 0;
 	}
 
 	public static void TriggerDisplay(Map<String, Integer> triggers) {
@@ -96,19 +117,25 @@ public class TriggerMatcher {
 		}
 	}
 
-	public static Map MatchExpr(HandlerInfo handlerFrom, HandlerInfo handlerTo,
+	public static Map MatchExpr(EvalConstruct from, EvalConstruct to,
 			ExpressionMatcher em) {
-		try {
-			Formula[] axioms = em.AxiomsGen(handlerFrom.getAppearOutputAtoms(),
-					handlerTo.getAppearInputAtoms());
-			return em.Prove(axioms, handlerFrom.getAppearNewoExpr(),
-					handlerTo.getAppearNewiExpr());
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (from != null && to != null) {
+			try {
+				Formula[] axioms = em.AxiomsGen(from.getOutputAtoms(),
+						to.getInputAtoms());
+				if (from.getNewoExpr() != "" && to.getNewiExpr() != "")
+					return em.Prove(axioms, from.getNewoExpr(),
+							to.getNewiExpr());
+				else
+					return null;
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		} else
 			return null;
-		}// This is to extract
-		
+
 	}
 	// public static List<HandlerInfo> LoadHandlers() throws IOException{
 	// BufferedReader br;

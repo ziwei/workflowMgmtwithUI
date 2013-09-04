@@ -15,7 +15,7 @@ import eu.visioncloud.workflowengine.obj.HandlerInfo;
 public class HandlerForm extends Window{
 	private VerticalLayout vPanel = new VerticalLayout();
 	private TextField nameField = new TextField();
-	private TextField inputField = new TextField();
+	private TextField triggerField = new TextField();
 	private TextField outputField = new TextField();
 	private Button btnModi = new Button("Save");
 	private HandlerInfo handlerInfo = null;
@@ -23,7 +23,7 @@ public class HandlerForm extends Window{
 		
 		initPanel();
 		nameField.setValue("");
-		inputField.setValue("");
+		triggerField.setValue("");
 		outputField.setValue("");
 		this.addComponent(vPanel);
 	}
@@ -31,7 +31,7 @@ public class HandlerForm extends Window{
 		setHandlerInfo(hInfo);
 		initPanel();
 		nameField.setValue(hInfo.getName());
-		inputField.setValue(hInfo.getInputExpr());
+		triggerField.setValue(hInfo.getInputExpr());
 		outputField.setValue(hInfo.getOutputExpr());
 		this.addComponent(vPanel);
 		// TODO Auto-generated constructor stub
@@ -47,10 +47,10 @@ public class HandlerForm extends Window{
 		nameField.setCaption("Handler Name: ");
 		nameField.setHeight("-1px");
 		nameField.setWidth("-1px");
-		vPanel.addComponent(inputField);
-		inputField.setCaption("Input: ");
-		inputField.setHeight("-1px");
-		inputField.setWidth("-1px");
+		vPanel.addComponent(triggerField);
+		triggerField.setCaption("trigger: ");
+		triggerField.setHeight("-1px");
+		triggerField.setWidth("-1px");
 		vPanel.addComponent(outputField);
 		outputField.setCaption("Output: ");
 		outputField.setHeight("-1px");
@@ -63,7 +63,7 @@ public class HandlerForm extends Window{
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				setHandlerInfo(new HandlerInfo(nameField.getValue().toString(), inputField.getValue().toString(),
+				setHandlerInfo(new HandlerInfo(nameField.getValue().toString(), triggerField.getValue().toString(),
 						outputField.getValue().toString()));
 				close();
 			}

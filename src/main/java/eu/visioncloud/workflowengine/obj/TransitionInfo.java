@@ -13,6 +13,9 @@ public class TransitionInfo {
 	private ArrayList partial = new ArrayList();
 	private ArrayList unrelated = new ArrayList();
 	private boolean acyclic;
+	
+	public TransitionInfo(){}
+	
 	public TransitionInfo(HandlerInfo f, HandlerInfo t, Map result){
 		setFrom(f);
 		setTo(t);
