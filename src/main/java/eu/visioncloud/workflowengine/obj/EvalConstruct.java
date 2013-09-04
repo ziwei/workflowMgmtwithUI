@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class EvalConstruct {
-	private String newiExpr = "";
-	private String newoExpr = "";
+	private String newiExpr = "iNA";
+	private String newoExpr = "oNA";
 	private List<Attribute> inputAtoms = new ArrayList<Attribute>();
 	private List<Attribute> outputAtoms = new ArrayList<Attribute>();
 	Map atoms = new HashMap();

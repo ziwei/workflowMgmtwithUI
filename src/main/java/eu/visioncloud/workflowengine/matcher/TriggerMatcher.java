@@ -63,7 +63,7 @@ public class TriggerMatcher {
 					result.putAll(constantResult);
 				if (result.containsValue(0) || result.containsValue(1)) {
 					gg.GenEdges(from, to, new TransitionInfo(from, to,
-							result));
+							appearResult, disappearResult, constantResult));
 				}
 			}
 		}
@@ -83,17 +83,7 @@ public class TriggerMatcher {
 		// }
 	}
 
-	private static int CheckReslt(Map result) {
-		if (null != result) {
-			if (result.containsValue(0)) {
-				return 0;
-			} else if (result.containsValue(1)) {
-				return 1;
-			} else
-				return 2;
-		} else
-			return 0;
-	}
+	
 
 	public static void TriggerDisplay(Map<String, Integer> triggers) {
 
@@ -123,11 +113,8 @@ public class TriggerMatcher {
 			try {
 				Formula[] axioms = em.AxiomsGen(from.getOutputAtoms(),
 						to.getInputAtoms());
-				if (from.getNewoExpr() != "" && to.getNewiExpr() != "")
-					return em.Prove(axioms, from.getNewoExpr(),
+				return em.Prove(axioms, from.getNewoExpr(),
 							to.getNewiExpr());
-				else
-					return null;
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -45,30 +45,34 @@ public class Plotter {
 	public void EdgesToDOT() {
 		for (TransitionInfo ti : graph.edgeSet()) {
 			if (ti.isAcyclic() == true) {
-				if (ti.getComplete().size() > 0)
+				if (ti.getFinalType().equals("complete"))
 					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName() + ":Trigger[label=\"c:"
-							+ ti.getComplete().size() + " p:"
-							+ ti.getPartial().size() + "\"]");
+							+ ti.getTo().getName() + ":Trigger[label=\"appear:"
+							+ ti.getTriggerTypes()[0] + " disappear:"
+							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ti.getTriggerTypes()[2] + "\"]");
 				else
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[style=dotted label=\"c:"
-							+ ti.getComplete().size() + " p:"
-							+ ti.getPartial().size() + "\"]");
+							+ ":Trigger[style=dotted label=\"appear:"
+							+ ti.getTriggerTypes()[0] + " disappear:"
+							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ti.getTriggerTypes()[2] + "\"]");
 			} else {
-				if (ti.getComplete().size() > 0)
+				if (ti.getFinalType().equals("complete"))
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[color=red label=\"c:"
-							+ ti.getComplete().size() + " p:"
-							+ ti.getPartial().size() + "\"]");
+							+ ":Trigger[color=red label=\"appear:"
+							+ ti.getTriggerTypes()[0] + " disappear:"
+							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ti.getTriggerTypes()[2] + "\"]");
 				else
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[color=red style=dotted label=\"c:"
-							+ ti.getComplete().size() + " p:"
-							+ ti.getPartial().size() + "\"]");
+							+ ":Trigger[color=red style=dotted label=\"appear:"
+							+ ti.getTriggerTypes()[0] + " disappear:"
+							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ti.getTriggerTypes()[2] + "\"]");
 			}
 		}
 	}
