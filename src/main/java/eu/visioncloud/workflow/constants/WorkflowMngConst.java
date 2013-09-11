@@ -26,6 +26,7 @@ public class WorkflowMngConst {
 	public static final String ccsURL = prop.getProperty("ccsURL");
 	public static final String objsURL = prop.getProperty("objsURL");
 	
+	public static final String container = prop.getProperty("container");
 	public static final String user = prop.getProperty("user");
 	public static final String tenant = prop.getProperty("tenant");
 	public static final String password = prop.getProperty("password");

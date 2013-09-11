@@ -14,6 +14,7 @@ public final class Trigger {
 
 	public static Trigger[] createTriggers(String input)
 		{
+		System.out.println(input);
 		Trigger[] res = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -35,7 +36,7 @@ public final class Trigger {
 			}
 
 		}
-	
+		System.out.println(res);
 		return res;
 	}
 

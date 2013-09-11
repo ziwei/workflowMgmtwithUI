@@ -30,11 +30,30 @@ public class HandlerInfo {
 	private EvalConstruct constant;
 
 	private boolean acyclic;
+	private boolean isDirty = false;
 
 	public HandlerInfo() {
 
 	}
+	public HandlerInfo(String n, String i, String o, boolean d) {
+		setName(n);
+		setInputExpr(i);
+		setOutputExpr(o);
+		// appear
 
+		setAppear(new EvalConstruct(a_inputExpr, a_outputExpr));
+
+		// disappear
+
+		setDisappear(new EvalConstruct(d_inputExpr, d_outputExpr));
+
+		// constant
+
+		setConstant(new EvalConstruct(c_inputExpr, c_outputExpr));
+
+		setAcyclic(true);
+		setDirty(d);
+	}
 	public HandlerInfo(String n, String i, String o) {
 		setName(n);
 		setInputExpr(i);
@@ -126,6 +145,14 @@ public class HandlerInfo {
 
 	public void setConstant(EvalConstruct constant) {
 		this.constant = constant;
+	}
+
+	public boolean isDirty() {
+		return isDirty;
+	}
+
+	public void setDirty(boolean isDirty) {
+		this.isDirty = isDirty;
 	}
 
 }

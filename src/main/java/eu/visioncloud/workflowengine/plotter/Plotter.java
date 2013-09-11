@@ -25,19 +25,36 @@ public class Plotter {
 
 	public void VerticesToDOT() {
 		for (HandlerInfo hi : graph.vertexSet()) {
-			if (hi.isAcyclic() == true) {
-				//System.out.println("expr " + hi.getInputExpr());
-				// if(hi.getName().equals("Notification"))
-				// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
-				// else
-				gv.add(hi.getName() + "[label=\"<Handler>" + hi.getName()
-						+ "|{<Trigger>" + Format(hi.getInputExpr())
-						+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
+			if (hi.isDirty()) {
+				if (hi.isAcyclic() == true) {
+					// System.out.println("expr " + hi.getInputExpr());
+					// if(hi.getName().equals("Notification"))
+					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
+					// else
+					gv.add(hi.getName() + "[label=\"<Handler>*" + hi.getName()
+							+ "|{<Trigger>" + Format(hi.getInputExpr())
+							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
+				} else {
+					gv.add(hi.getName() + "[color=red label=\"<Handler>*"
+							+ hi.getName() + "|{<Trigger>"
+							+ Format(hi.getInputExpr()) + "|<Output>"
+							+ Format(hi.getOutputExpr()) + "}\"]");
+				}
 			} else {
-				gv.add(hi.getName() + "[color=red label=\"<Handler>"
-						+ hi.getName() + "|{<Trigger>"
-						+ Format(hi.getInputExpr()) + "|<Output>"
-						+ Format(hi.getOutputExpr()) + "}\"]");
+				if (hi.isAcyclic() == true) {
+					// System.out.println("expr " + hi.getInputExpr());
+					// if(hi.getName().equals("Notification"))
+					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
+					// else
+					gv.add(hi.getName() + "[label=\"<Handler>" + hi.getName()
+							+ "|{<Trigger>" + Format(hi.getInputExpr())
+							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
+				} else {
+					gv.add(hi.getName() + "[color=red label=\"<Handler>"
+							+ hi.getName() + "|{<Trigger>"
+							+ Format(hi.getInputExpr()) + "|<Output>"
+							+ Format(hi.getOutputExpr()) + "}\"]");
+				}
 			}
 		}
 	}
@@ -82,15 +99,15 @@ public class Plotter {
 				.replaceAll("'\\('", "\\(").replaceAll("'\\)'", "\\)")
 				.replaceAll("\\>", "\\\\>").replaceAll("\\{", "\\\\{")
 				.replaceAll("\\}", "\\\\}").replaceAll("\"", "");
-//		if (expr.length() >= 50) {
-//			int offset = expr.length() / 2 + 1;
-//			if (expr.charAt(offset - 1) == '\\')
-//				offset++;
-//			String newstr = expr.substring(0, offset) + "\\n"
-//					+ expr.substring(offset, expr.length());
-//			return newstr;// ///check before cut
-//		} else
-//			return expr;
+		// if (expr.length() >= 50) {
+		// int offset = expr.length() / 2 + 1;
+		// if (expr.charAt(offset - 1) == '\\')
+		// offset++;
+		// String newstr = expr.substring(0, offset) + "\\n"
+		// + expr.substring(offset, expr.length());
+		// return newstr;// ///check before cut
+		// } else
+		// return expr;
 		return expr;
 	}
 

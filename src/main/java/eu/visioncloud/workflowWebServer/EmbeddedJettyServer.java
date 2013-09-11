@@ -29,15 +29,14 @@ public class EmbeddedJettyServer {
 		server = new Server();
 		WebAppContext webAppContext = new WebAppContext();
         webAppContext.setContextPath("/workflowmanager");
-        //webAppContext.setDescriptor("src/main/webapp/WEB-INF/web.xml");
-        //webAppContext.setResourceBase("src/main/webapp");
-        webAppContext.setDescriptor("webapp/WEB-INF/web.xml");
-        webAppContext.setResourceBase("webapp");
+        webAppContext.setDescriptor("src/main/webapp/WEB-INF/web.xml");//for test
+        webAppContext.setResourceBase("src/main/webapp");
+        //webAppContext.setDescriptor("webapp/WEB-INF/web.xml");//for deploy
+        //webAppContext.setResourceBase("webapp");
       
         webAppContext.setParentLoaderPriority(true);
         server.setHandler(webAppContext);
         
-
         SelectChannelConnector connector1 = new SelectChannelConnector();
         connector1.setHost(ip);
         connector1.setPort(port);

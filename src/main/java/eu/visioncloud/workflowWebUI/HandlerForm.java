@@ -64,7 +64,7 @@ public class HandlerForm extends Window{
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				setHandlerInfo(new HandlerInfo(nameField.getValue().toString(), triggerField.getValue().toString(),
-						outputField.getValue().toString()));
+						outputField.getValue().toString(), true));
 				close();
 			}
 		});
