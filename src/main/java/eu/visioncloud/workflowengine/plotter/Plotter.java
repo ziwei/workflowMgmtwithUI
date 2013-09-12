@@ -31,14 +31,15 @@ public class Plotter {
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getName() + "[label=\"<Handler>*" + hi.getName()
+					gv.add(hi.getName() + "[label=\"<Handler>*"
+							+ hi.getSlName() + "." + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				} else {
 					gv.add(hi.getName() + "[color=red label=\"<Handler>*"
-							+ hi.getName() + "|{<Trigger>"
-							+ Format(hi.getInputExpr()) + "|<Output>"
-							+ Format(hi.getOutputExpr()) + "}\"]");
+							+ hi.getSlName() + "." + hi.getName()
+							+ "|{<Trigger>" + Format(hi.getInputExpr())
+							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				}
 			} else {
 				if (hi.isAcyclic() == true) {
@@ -46,14 +47,15 @@ public class Plotter {
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getName() + "[label=\"<Handler>" + hi.getName()
-							+ "|{<Trigger>" + Format(hi.getInputExpr())
-							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
-				} else {
-					gv.add(hi.getName() + "[color=red label=\"<Handler>"
-							+ hi.getName() + "|{<Trigger>"
+					gv.add(hi.getName() + "[label=\"<Handler>" + hi.getSlName()
+							+ "." + hi.getName() + "|{<Trigger>"
 							+ Format(hi.getInputExpr()) + "|<Output>"
 							+ Format(hi.getOutputExpr()) + "}\"]");
+				} else {
+					gv.add(hi.getName() + "[color=red label=\"<Handler>"
+							+ hi.getSlName() + "." + hi.getName()
+							+ "|{<Trigger>" + Format(hi.getInputExpr())
+							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				}
 			}
 		}
@@ -64,31 +66,31 @@ public class Plotter {
 			if (ti.isAcyclic() == true) {
 				if (ti.getFinalType().equals("complete"))
 					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName() + ":Trigger[label=\"appear:"
-							+ ti.getTriggerTypes()[0] + " disappear:"
-							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ti.getTo().getName() + ":Trigger[label=\"app:"
+							+ ti.getTriggerTypes()[0] + " dis:"
+							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 				else
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[style=dotted label=\"appear:"
-							+ ti.getTriggerTypes()[0] + " disappear:"
-							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ":Trigger[style=dotted label=\"app:"
+							+ ti.getTriggerTypes()[0] + " dis:"
+							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 			} else {
 				if (ti.getFinalType().equals("complete"))
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[color=red label=\"appear:"
-							+ ti.getTriggerTypes()[0] + " disappear:"
-							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ":Trigger[color=red label=\"app:"
+							+ ti.getTriggerTypes()[0] + " dis:"
+							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 				else
 					gv.add(ti.getFrom().getName() + ":Output->"
 							+ ti.getTo().getName()
-							+ ":Trigger[color=red style=dotted label=\"appear:"
-							+ ti.getTriggerTypes()[0] + " disappear:"
-							+ ti.getTriggerTypes()[1] + " constant:"
+							+ ":Trigger[color=red style=dotted label=\"app:"
+							+ ti.getTriggerTypes()[0] + " dis:"
+							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 			}
 		}
@@ -96,9 +98,10 @@ public class Plotter {
 
 	private String Format(String expr) {
 		expr = expr.replaceAll("\\|", "\\\\|").replaceAll("\\<", "\\\\<")
-				.replaceAll("'\\('", "\\(").replaceAll("'\\)'", "\\)")
 				.replaceAll("\\>", "\\\\>").replaceAll("\\{", "\\\\{")
-				.replaceAll("\\}", "\\\\}").replaceAll("\"", "");
+				.replaceAll("\\}", "\\\\}").replaceAll("\"", "")
+				.replace("disappear", "dis").replace("appear", "app")
+				.replace("constant", "con");
 		// if (expr.length() >= 50) {
 		// int offset = expr.length() / 2 + 1;
 		// if (expr.charAt(offset - 1) == '\\')

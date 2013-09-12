@@ -8,13 +8,11 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-
 @XmlRootElement
 public final class Trigger {
 
-	public static Trigger[] createTriggers(String input)
-		{
-		System.out.println(input);
+	public static Trigger[] createTriggers(String input) {
+		// System.out.println(input);
 		Trigger[] res = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -32,11 +30,11 @@ public final class Trigger {
 			} catch (JsonParseException e) {
 			} catch (JsonMappingException e) {
 			} catch (IOException e) {
-				
+
 			}
 
 		}
-		System.out.println(res);
+		// System.out.println(res);
 		return res;
 	}
 
@@ -64,7 +62,6 @@ public final class Trigger {
 		this.triggerEvaluator = triggerEvaluator;
 	}
 
-
 	public String[] getTriggerTypes() {
 		return triggerTypes;
 	}
@@ -84,7 +81,6 @@ public final class Trigger {
 	 * Test if Event matches Trigger conditions
 	 */
 
-	
 	public boolean isExecuteLocal() {
 		return executeLocal;
 	}
@@ -93,7 +89,6 @@ public final class Trigger {
 		this.executeLocal = executeLocal;
 	}
 
-
 	public String getOutputEvaluator() {
 		return outputEvaluator;
 	}
@@ -101,29 +96,29 @@ public final class Trigger {
 	public void setOutputEvaluator(String outputEvaluator) {
 		this.outputEvaluator = outputEvaluator;
 	}
-	
-	public static String jsonUnEscape(String string){
-	      
-        string = string.replace("\\b", "\b");
-        string = string.replace("\\t", "\t");
-        string = string.replace("\\n", "\n");
-        string = string.replace("\\f", "\f");
-        string = string.replace("\\r", "\r");
-  
-		char         c1 = 0;
-		int          i;
-		int          len = string.length();
+
+	public static String jsonUnEscape(String string) {
+
+		string = string.replace("\\b", "\b");
+		string = string.replace("\\t", "\t");
+		string = string.replace("\\n", "\n");
+		string = string.replace("\\f", "\f");
+		string = string.replace("\\r", "\r");
+
+		char c1 = 0;
+		int i;
+		int len = string.length();
 		StringBuffer sb = new StringBuffer(len);
 		boolean removed = false;
 		for (i = 0; i < len; i += 1) {
 			c1 = string.charAt(i);
-			if(c1=='\\' && !removed){
+			if (c1 == '\\' && !removed) {
 				removed = true;
-			}else{
+			} else {
 				sb.append(c1);
 				removed = false;
 			}
 		}
 		return sb.toString();
-}
+	}
 }

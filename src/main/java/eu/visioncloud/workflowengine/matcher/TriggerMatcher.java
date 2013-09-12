@@ -83,8 +83,6 @@ public class TriggerMatcher {
 		// }
 	}
 
-	
-
 	public static void TriggerDisplay(Map<String, Integer> triggers) {
 
 		Set<String> keyset = triggers.keySet();
@@ -113,8 +111,7 @@ public class TriggerMatcher {
 			try {
 				Formula[] axioms = em.AxiomsGen(from.getOutputAtoms(),
 						to.getInputAtoms());
-				return em.Prove(axioms, from.getNewoExpr(),
-							to.getNewiExpr());
+				return em.Prove(axioms, from.getNewoExpr(), to.getNewiExpr());
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

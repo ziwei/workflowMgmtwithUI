@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class HandlerInfo {
-
+	private String slName;
 	private String name;
 	private String inputExpr;
 	private String outputExpr;
@@ -35,7 +35,9 @@ public class HandlerInfo {
 	public HandlerInfo() {
 
 	}
-	public HandlerInfo(String n, String i, String o, boolean d) {
+
+	public HandlerInfo(String slName, String n, String i, String o, boolean d) {
+		setSlName(slName);
 		setName(n);
 		setInputExpr(i);
 		setOutputExpr(o);
@@ -54,24 +56,25 @@ public class HandlerInfo {
 		setAcyclic(true);
 		setDirty(d);
 	}
-	public HandlerInfo(String n, String i, String o) {
-		setName(n);
-		setInputExpr(i);
-		setOutputExpr(o);
-		// appear
 
-		setAppear(new EvalConstruct(a_inputExpr, a_outputExpr));
-
-		// disappear
-
-		setDisappear(new EvalConstruct(d_inputExpr, d_outputExpr));
-
-		// constant
-
-		setConstant(new EvalConstruct(c_inputExpr, c_outputExpr));
-
-		setAcyclic(true);
-	}
+	// public HandlerInfo(String n, String i, String o) {
+	// setName(n);
+	// setInputExpr(i);
+	// setOutputExpr(o);
+	// // appear
+	//
+	// setAppear(new EvalConstruct(a_inputExpr, a_outputExpr));
+	//
+	// // disappear
+	//
+	// setDisappear(new EvalConstruct(d_inputExpr, d_outputExpr));
+	//
+	// // constant
+	//
+	// setConstant(new EvalConstruct(c_inputExpr, c_outputExpr));
+	//
+	// setAcyclic(true);
+	// }
 
 	public boolean isAcyclic() {
 		return acyclic;
@@ -153,6 +156,14 @@ public class HandlerInfo {
 
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
+	}
+
+	public String getSlName() {
+		return slName;
+	}
+
+	public void setSlName(String slName) {
+		this.slName = slName;
 	}
 
 }
