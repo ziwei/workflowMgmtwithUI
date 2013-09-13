@@ -123,8 +123,8 @@ public class MainComponent extends CustomComponent {
 		this.oClient = oClient;
 		this.tenant = t;
 		this.containers = getContainers();
-		if (containers != null) {	
-			this.currentContainer = containers[0];	
+		if (containers != null) {
+			this.currentContainer = containers[0];
 		}
 		this.handlers = LoadHandlers();
 		buildMainLayout();
@@ -190,8 +190,7 @@ public class MainComponent extends CustomComponent {
 		sourceTree.setMultiSelect(true);
 		sourceTree.setStyleName("my-style");
 		fillTree();
-		// containersList.setCaption("Valid Containers");
-		// fillContainersList();
+
 		Panel sourceTreeWrapper = new Panel();
 		sourceTreeWrapper.setWidth("400px");
 		sourceTreeWrapper.setHeight("100%");
@@ -200,15 +199,35 @@ public class MainComponent extends CustomComponent {
 		sourceTreeWrapper.addComponent(sourceTree);
 		hl_inputTab.addComponent(sourceTreeWrapper);
 
+		containersList = new ComboBox();
+		containersList.setCaption("Valid Containers");
+		containersList.setWidth("-1px");
+		containersList.setNullSelectionAllowed(false);
+		fillContainersList();
+		containersList.setValue(currentContainer);
 		// btnPanel1
 		btnPanel1 = buildBtnPanel1();
-		hl_inputTab.addComponent(btnPanel1);
-		hl_inputTab.setComponentAlignment(btnPanel1, Alignment.MIDDLE_CENTER);
+		// hl_inputTab.addComponent(btnPanel1);
+		// hl_inputTab.setComponentAlignment(btnPanel1,
+		// Alignment.MIDDLE_CENTER);
+		VerticalLayout controlWrapper = new VerticalLayout();
+		controlWrapper.setSizeUndefined();
+		controlWrapper.setImmediate(false);
+		controlWrapper.setSpacing(true);
+		// controlWrapper.getContent().setSizeUndefined();
+		controlWrapper.addComponent(containersList);
+		controlWrapper.setComponentAlignment(containersList,
+				Alignment.MIDDLE_CENTER);
+		controlWrapper.addComponent(btnPanel1);
+		controlWrapper
+				.setComponentAlignment(btnPanel1, Alignment.MIDDLE_CENTER);
+		hl_inputTab.addComponent(controlWrapper);
+		hl_inputTab.setComponentAlignment(controlWrapper,
+				Alignment.MIDDLE_CENTER);
 		// targetTree
 		targetTree = new Tree();
 		targetTree.setImmediate(false);
-		targetTree.setWidth("-1px");
-		targetTree.setHeight("100.0%");
+		targetTree.setSizeUndefined();
 		targetTree.setCaption("Target Handler List");
 		targetTree.addContainerProperty(CAPTION_PROPERTY, String.class, "");
 		targetTree
@@ -368,26 +387,15 @@ public class MainComponent extends CustomComponent {
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				// System.out.println(sourceTree.getValue().getClass().getName());
-				if (((Set) sourceTree.getValue()).size() == 1
-						&& ((Set) sourceTree.getValue()).iterator().next()
-								.getClass().equals(HandlerInfo.class)) {
-					final HandlerInfo selectedhandler = (HandlerInfo) ((Set) sourceTree
-							.getValue()).iterator().next();
-					final HandlerForm hf = new HandlerForm(selectedhandler);
-					hf.center();
-					hf.addListener(new Window.CloseListener() {
-						@Override
-						public void windowClose(CloseEvent e) {
-							// TODO Auto-generated method stub
-							if (null != hf.getHandlerInfo()) {
-								addHandlerItem(hf.getHandlerInfo(), sourceTree);
-								// handlers.add(hf.getHandlerInfo());
-								removeHandlerItem(selectedhandler, sourceTree);
-								// handlers.remove(selectedhandler);
-							}
-						}
-					});
-					getWindow().addWindow(hf);
+				if (((Set) sourceTree.getValue()).size()
+						+ ((Set) targetTree.getValue()).size() == 1) {
+					if (((Set) sourceTree.getValue()).size() == 1)
+					{
+						constructEditForm(sourceTree);
+					}
+					else{
+						constructEditForm(targetTree);
+					}
 				} else {
 					getWindow().showNotification(
 							"Please select 1 handler from Left List");
@@ -410,7 +418,7 @@ public class MainComponent extends CustomComponent {
 				// TODO Auto-generated method stub
 				sourceTree.removeAllItems();
 				targetTree.removeAllItems();
-				// currentContainer = containersList.getValue().toString();
+				currentContainer = containersList.getValue().toString();
 				handlers = LoadHandlers();
 				fillTree();
 			}
@@ -612,15 +620,39 @@ public class MainComponent extends CustomComponent {
 			// TODO Auto-generated catch block
 			logger.error("Load containers failed ", e);
 			tenant = WorkflowMngConst.tenant;
-			return new String[]{WorkflowMngConst.container};
+			return new String[] { WorkflowMngConst.container };
 		}
 	}
 
-//	private void fillContainersList() {
-//		for (String container : containers) {
-//			containersList.addItem(container);
-//		}
-//	}
+	private void fillContainersList() {
+		for (String container : containers) {
+			containersList.addItem(container);
+		}
+	}
+
+	private void constructEditForm(final Tree tree) {
+		if (((Set) tree.getValue()).size() == 1
+				&& ((Set) tree.getValue()).iterator().next()
+						.getClass().equals(HandlerInfo.class)) {
+			final HandlerInfo selectedhandler = (HandlerInfo) ((Set) tree
+					.getValue()).iterator().next();
+			final HandlerForm hf = new HandlerForm(selectedhandler);
+			hf.center();
+			hf.addListener(new Window.CloseListener() {
+				@Override
+				public void windowClose(CloseEvent e) {
+					// TODO Auto-generated method stub
+					if (null != hf.getHandlerInfo()) {
+						addHandlerItem(hf.getHandlerInfo(), tree);
+						// handlers.add(hf.getHandlerInfo());
+						removeHandlerItem(selectedhandler, tree);
+						// handlers.remove(selectedhandler);
+					}
+				}
+			});
+			getWindow().addWindow(hf);
+		}
+	}
 
 	private Set<HandlerInfo> LoadLocalHandlers() throws IOException {
 

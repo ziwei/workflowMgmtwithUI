@@ -48,7 +48,7 @@ public class HandlerForm extends Window {
 		vPanel.setHeight("-1px");
 		vPanel.setWidth("-1px");
 		vPanel.addComponent(slField);
-		slField.setCaption("Handler Name: ");
+		slField.setCaption("Storlet Name: ");
 		slField.setHeight("-1px");
 		slField.setWidth("-1px");
 		vPanel.addComponent(nameField);
