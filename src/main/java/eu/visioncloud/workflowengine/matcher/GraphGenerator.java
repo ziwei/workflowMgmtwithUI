@@ -39,7 +39,7 @@ public class GraphGenerator {
 		// DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 		for (HandlerInfo hi : handlers) {
 			graph.addVertex(hi);
-			// System.out.println(handlers.get(i).name);
+			//System.out.println(hi.getSlName()+hi.getName());
 		}
 	}
 

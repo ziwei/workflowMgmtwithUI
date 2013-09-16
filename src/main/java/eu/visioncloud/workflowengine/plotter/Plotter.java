@@ -31,12 +31,12 @@ public class Plotter {
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getName() + "[label=\"<Handler>*"
+					gv.add(hi.getSlName() + hi.getName() + "[label=\"<Handler>*"
 							+ hi.getSlName() + "." + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				} else {
-					gv.add(hi.getName() + "[color=red label=\"<Handler>*"
+					gv.add(hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>*"
 							+ hi.getSlName() + "." + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
@@ -47,12 +47,12 @@ public class Plotter {
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getName() + "[label=\"<Handler>" + hi.getSlName()
+					gv.add(hi.getSlName() + hi.getName() + "[label=\"<Handler>" + hi.getSlName()
 							+ "." + hi.getName() + "|{<Trigger>"
 							+ Format(hi.getInputExpr()) + "|<Output>"
 							+ Format(hi.getOutputExpr()) + "}\"]");
 				} else {
-					gv.add(hi.getName() + "[color=red label=\"<Handler>"
+					gv.add(hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>"
 							+ hi.getSlName() + "." + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
@@ -65,29 +65,29 @@ public class Plotter {
 		for (TransitionInfo ti : graph.edgeSet()) {
 			if (ti.isAcyclic() == true) {
 				if (ti.getFinalType().equals("complete"))
-					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName() + ":Trigger[label=\"app:"
+					gv.add(ti.getFrom().getSlName()+ti.getFrom().getName() + ":Output->"
+							+ ti.getTo().getSlName()+ti.getTo().getName() + ":Trigger[label=\"app:"
 							+ ti.getTriggerTypes()[0] + " dis:"
 							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 				else
-					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName()
+					gv.add(ti.getFrom().getSlName()+ti.getFrom().getName() + ":Output->"
+							+ ti.getTo().getSlName()+ti.getTo().getName()
 							+ ":Trigger[style=dotted label=\"app:"
 							+ ti.getTriggerTypes()[0] + " dis:"
 							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 			} else {
 				if (ti.getFinalType().equals("complete"))
-					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName()
+					gv.add(ti.getFrom().getSlName()+ti.getFrom().getName() + ":Output->"
+							+ ti.getTo().getSlName()+ti.getTo().getName()
 							+ ":Trigger[color=red label=\"app:"
 							+ ti.getTriggerTypes()[0] + " dis:"
 							+ ti.getTriggerTypes()[1] + " con:"
 							+ ti.getTriggerTypes()[2] + "\"]");
 				else
-					gv.add(ti.getFrom().getName() + ":Output->"
-							+ ti.getTo().getName()
+					gv.add(ti.getFrom().getSlName()+ti.getFrom().getName() + ":Output->"
+							+ ti.getTo().getSlName()+ti.getTo().getName()
 							+ ":Trigger[color=red style=dotted label=\"app:"
 							+ ti.getTriggerTypes()[0] + " dis:"
 							+ ti.getTriggerTypes()[1] + " con:"

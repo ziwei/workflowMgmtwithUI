@@ -71,9 +71,14 @@ public class WorkflowUIApp extends Application {
 				userId = login.userId;
 				password = login.password;
 				initCCIClient();
-				
-				mainComponent = new MainComponent(tenant, oClient);
-				window.setContent(mainComponent);
+				if (oClient != null){
+					mainComponent = new MainComponent(tenant, oClient);
+					window.setContent(mainComponent);
+				}
+				else{
+					lf.showNotification("Invalid tenant name, user id or password");
+					lf.getApplication().close();
+				}
 			}
 		});
 		window.addWindow(lf);
