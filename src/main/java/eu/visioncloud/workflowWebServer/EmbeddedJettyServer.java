@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -65,7 +66,11 @@ public class EmbeddedJettyServer {
 		connector1.setHost(ip);
 		connector1.setPort(port);
 		connector1.setThreadPool(new QueuedThreadPool(threadNum));
-		server.addConnector(connector1);
+		SelectChannelConnector connector2 = new SelectChannelConnector();
+		connector2.setHost("localhost");
+		connector2.setPort(port);
+		connector2.setThreadPool(new QueuedThreadPool(threadNum));
+		server.setConnectors(new Connector[] {connector1, connector2});
 		StopHandler stopHandler = new StopHandler();
 
 		HandlerList handlers = new HandlerList();
@@ -87,7 +92,7 @@ public class EmbeddedJettyServer {
 				HttpServletResponse response) throws IOException,
 				ServletException {
 			// TODO Auto-generated method stub
-			if (target.equals("/workflowmanager/stop")) {
+			if (target.equals("/workflowmanager/stop")&&!request.getLocalAddr().equals(WorkflowMngConst.ip)) {
 				response.getWriter().println("Shut Down");
 				response.flushBuffer();
 				new Thread() {

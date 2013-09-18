@@ -220,7 +220,7 @@ public class MainComponent extends CustomComponent {
 		containersList.setValue(currentContainer);
 
 		contField = new TextField();
-		contField.setCaption("Custom Containers");
+		contField.setCaption("Custom Container");
 		contField.setWidth("-1px");
 		contField.setValue("");
 		// btnPanel1
