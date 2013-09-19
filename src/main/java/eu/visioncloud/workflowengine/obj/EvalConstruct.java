@@ -45,7 +45,7 @@ public class EvalConstruct {
 
 	public List<Attribute> AtomExtractor(String expr, String flag, Map atoms) {
 		List<Attribute> l = new ArrayList();
-		expr = expr.replaceAll("'\\('|'\\)'", "");// distinguish () in logical
+		expr = expr.replaceAll("\\(|\\)", "");// distinguish () in logical
 													// expr and regex as '(' +
 													// ')'
 		String exprList[] = expr.split("&&|\\|\\|");

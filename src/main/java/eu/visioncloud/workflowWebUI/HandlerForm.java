@@ -87,5 +87,8 @@ public class HandlerForm extends Window {
 	public void setHandlerInfo(HandlerInfo handlerInfo) {
 		this.handlerInfo = handlerInfo;
 	}
-
+	
+	public Component getButton(){
+		return btnModi;
+	}
 }

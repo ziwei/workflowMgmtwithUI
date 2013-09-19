@@ -43,7 +43,10 @@ public class TransitionInfo {
 	}
 
 	private char CheckResult(Map result) {
-		if (!result.isEmpty()) {
+		if (result == null){
+			return 'n';
+		}
+		else if (!result.isEmpty()) {
 			if (result.containsValue(0)) {
 				return 'c';
 			} else if (result.containsValue(1)) {

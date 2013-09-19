@@ -7,7 +7,7 @@
 	<context-param>
 		<description>Vaadin</description>
 		<param-name>productionMode</param-name>
-		<param-value>false</param-value>
+		<param-value>true</param-value>
 	</context-param>
 	<servlet>
 		<servlet-name>Workflow Management Servlet</servlet-name>
@@ -15,7 +15,7 @@
 		<init-param>
 			<description>Workflow Management Service UI</description>
 			<param-name>application</param-name>
-			<param-value>eu.visioncloud.workflowWebUI.MyVaadinApplication</param-value>
+			<param-value>eu.visioncloud.workflowWebUI.WorkflowUIApp</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
