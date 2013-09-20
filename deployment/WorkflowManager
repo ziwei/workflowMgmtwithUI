@@ -1,0 +1,68 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+
+### END INIT INFO
+
+ROOT_PATH=/srv/WorkflowManager/
+SRE_JAR=workflowManager.jar
+
+RESPONSE="000"
+EXTURL="http://10.0.1.101:8003/workflowmanager/"
+LOCALURL="http://localhost:8003/workflowmanager/"
+
+sendReqeust(){
+RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null "$EXTURL""log")
+}
+
+case "$1" in
+  start)
+	sendReqeust
+	if [ "$RESPONSE" -eq "000" ] || [ "$RESPONSE" -eq "404" ]
+	then
+		export JAVA_OPTS="-D SRERootPath=$ROOT_PATH"
+		java -jar "$ROOT_PATH$SRE_JAR"&
+		echo "starting"
+		sleep 3
+		sendReqeust
+        sleep 1
+		if [ "$RESPONSE" -eq "000" ] || [ "$RESPONSE" -eq "404" ]
+		then
+			echo "cannot start"
+		else
+			echo "started successfully"
+		fi
+	else
+		echo "already running"
+	fi
+	;;
+  stop)
+	curl "$LOCALURL""stop" --silent --output /dev/null
+	sleep 2
+	sendReqeust
+	if [ "$RESPONSE" -eq "000" ] || [ "$RESPONSE" -eq "404" ]
+	then
+		echo "shut down successfully"
+	fi
+	;;
+  restart)
+  	$0 stop
+	sleep 3
+	$0 start
+	;;
+  status)
+	sendReqeust
+	if [ "$RESPONSE" -eq "000" ] || [ "$RESPONSE" -eq "404" ]
+	then
+		echo "not running"
+	else
+		echo "it is running"
+	fi
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|status}" >&2
+	exit 1
+	;;
+esac
+
