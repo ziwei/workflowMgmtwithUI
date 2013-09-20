@@ -25,19 +25,23 @@ public class Plotter {
 
 	public void VerticesToDOT() {
 		for (HandlerInfo hi : graph.vertexSet()) {
+//			System.out.println("vertex : " + hi.getSlName() + hi.getName() + "[label=\"<Handler>*"
+//					+ hi.getSlName() + ":" + hi.getName()
+//					+ "|{<Trigger>" + Format(hi.getInputExpr())
+//					+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 			if (hi.isDirty()) {
 				if (hi.isAcyclic() == true) {
 					// System.out.println("expr " + hi.getInputExpr());
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getSlName() + hi.getName() + "[label=\"<Handler>*"
-							+ hi.getSlName() + "." + hi.getName()
+					gv.add("ID"+hi.getSlName() + hi.getName() + "[label=\"<Handler>*"
+							+ hi.getSlName() + ":" + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				} else {
-					gv.add(hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>*"
-							+ hi.getSlName() + "." + hi.getName()
+					gv.add("ID"+hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>*"
+							+ hi.getSlName() + ":" + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				}
@@ -47,13 +51,13 @@ public class Plotter {
 					// if(hi.getName().equals("Notification"))
 					// gv.add(hi.getName()+"[label=\"<Handler>"+hi.getName()+"|{<Trigger>"+Format(hi.getInputExpr())+"|<Output>"+Format(hi.getOutputExpr())+"}\"]");
 					// else
-					gv.add(hi.getSlName() + hi.getName() + "[label=\"<Handler>" + hi.getSlName()
-							+ "." + hi.getName() + "|{<Trigger>"
+					gv.add("ID"+hi.getSlName() + hi.getName() + "[label=\"<Handler>" + hi.getSlName()
+							+ ":" + hi.getName() + "|{<Trigger>"
 							+ Format(hi.getInputExpr()) + "|<Output>"
 							+ Format(hi.getOutputExpr()) + "}\"]");
 				} else {
-					gv.add(hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>"
-							+ hi.getSlName() + "." + hi.getName()
+					gv.add("ID"+hi.getSlName() + hi.getName() + "[color=red label=\"<Handler>"
+							+ hi.getSlName() + ":" + hi.getName()
 							+ "|{<Trigger>" + Format(hi.getInputExpr())
 							+ "|<Output>" + Format(hi.getOutputExpr()) + "}\"]");
 				}

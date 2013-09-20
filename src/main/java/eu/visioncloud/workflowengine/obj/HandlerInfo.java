@@ -89,7 +89,10 @@ public class HandlerInfo {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		if (!name.equals("")&&name!=null)
+			this.name = name;
+		else
+			this.name = "DEFAULT";
 	}
 
 	public String getInputExpr() {
@@ -100,11 +103,11 @@ public class HandlerInfo {
 		this.inputExpr = inputExpr.replaceAll("\\s", "");
 		String[] evals = this.inputExpr.split(",");
 		for (String eval : evals) {
-			if (eval.startsWith("appear"))
+			if (eval.startsWith("appear")&&eval.length()>8)
 				a_inputExpr = eval.substring(8, eval.length() - 1);
-			else if (eval.startsWith("disappear"))
+			else if (eval.startsWith("disappear")&&eval.length()>11)
 				d_inputExpr = eval.substring(11, eval.length() - 1);
-			else if (eval.startsWith("constant"))
+			else if (eval.startsWith("constant")&&eval.length()>10)
 				c_inputExpr = eval.substring(10, eval.length() - 1);
 		}// System.out.println(getAppearInputExpr());
 	}
@@ -117,11 +120,11 @@ public class HandlerInfo {
 		this.outputExpr = outputExpr.replaceAll("\\s", "");
 		String[] evals = this.outputExpr.split(",");
 		for (String eval : evals) {
-			if (eval.startsWith("appear"))
+			if (eval.startsWith("appear")&&eval.length()>8)
 				a_outputExpr = eval.substring(8, eval.length() - 1);
-			else if (eval.startsWith("disappear"))
+			else if (eval.startsWith("disappear")&&eval.length()>11)
 				d_outputExpr = eval.substring(11, eval.length() - 1);
-			else if (eval.startsWith("constant"))
+			else if (eval.startsWith("constant")&&eval.length()>10)
 				c_outputExpr = eval.substring(10, eval.length() - 1);
 		}// System.out.println(getAppearInputExpr());
 	}
@@ -163,7 +166,10 @@ public class HandlerInfo {
 	}
 
 	public void setSlName(String slName) {
-		this.slName = slName;
+		if (!slName.equals("")&&slName!=null)
+			this.slName = slName;
+		else
+			this.slName = "DEFAULT";
 	}
 
 }

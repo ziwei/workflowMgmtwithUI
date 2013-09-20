@@ -70,7 +70,7 @@ public class EmbeddedJettyServer {
 		connector2.setHost("localhost");
 		connector2.setPort(port);
 		connector2.setThreadPool(new QueuedThreadPool(threadNum));
-		server.setConnectors(new Connector[] {connector1, connector2});
+		server.setConnectors(new Connector[] {connector1, connector2}); //
 		StopHandler stopHandler = new StopHandler();
 
 		HandlerList handlers = new HandlerList();
