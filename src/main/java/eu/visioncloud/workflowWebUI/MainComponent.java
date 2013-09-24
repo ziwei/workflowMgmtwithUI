@@ -3,9 +3,11 @@ package eu.visioncloud.workflowWebUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -129,10 +131,10 @@ public class MainComponent extends CustomComponent {
 		if (containers != null) {
 			this.currentContainer = containers[0];
 		}
-		if (!currentContainer.equals("")){
+		if (!currentContainer.equals("")) {
 			this.handlers = LoadHandlers();
 		}
-		
+
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 		// TODO add user code here
@@ -446,7 +448,12 @@ public class MainComponent extends CustomComponent {
 				else
 					currentContainer = contField.getValue().toString();
 				if (!currentContainer.equals("")) {
-					handlers = LoadHandlers();
+					try {
+						handlers = LoadLocalHandlers();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					fillTree();
 				}
 			}
@@ -593,57 +600,6 @@ public class MainComponent extends CustomComponent {
 	 * We need to implement this method that returns the resource as a stream.
 	 */
 
-	private Set<HandlerInfo> LoadHandlers() {
-		Set<HandlerInfo> handlers = new HashSet<HandlerInfo>();
-		try {
-			// String[] objList = oClient.getContainerContents("TestTenant",
-			// "edt-testChain6");
-			logger.info("storlet loading");
-			String[] slList = oClient.getObjectIdsForMetadata(tenant,
-					currentContainer, SPEConstants.STORLET_TAG_TRIGGERS);
-			if (slList == null)
-				return handlers;
-
-			for (String slName : slList) {
-				logger.info(slName + " storlet loaded");
-				String outputs = oClient.getObjectMetadataEntry(tenant,
-						currentContainer, slName, "_slOutputs");
-				Trigger[] triggers = Trigger.createTriggers(oClient
-						.getObjectMetadataEntry(tenant, currentContainer,
-								slName, SPEConstants.STORLET_TAG_TRIGGERS));
-
-				if (triggers != null) {
-					for (Trigger trigger : triggers) {
-						if (outputs != null) {
-							JSONObject obj = JSONObject.fromObject(outputs);
-							if (obj.containsKey(trigger.getHandlerID())) {
-								handlers.add(new HandlerInfo(slName, trigger
-										.getHandlerID(), trigger
-										.getTriggerEvaluator(), obj
-										.getString(trigger.getHandlerID()),
-										false));
-							} else {
-								handlers.add(new HandlerInfo(slName, trigger
-										.getHandlerID(), trigger
-										.getTriggerEvaluator(), "oNA", false));
-							}
-						} else {
-							handlers.add(new HandlerInfo(slName, trigger
-									.getHandlerID(), trigger
-									.getTriggerEvaluator(), "oNA", false));
-						}
-					}
-				}
-
-				// }
-			}
-		} catch (ContentCentricException e) {
-			// TODO Auto-generated catch block
-			logger.error("load handlers failed ", e);
-		}
-		return handlers;
-	}
-
 	private String[] getContainers() {
 		try {
 			String[] containers = oClient.listContainers(tenant);
@@ -677,7 +633,7 @@ public class MainComponent extends CustomComponent {
 				public void windowClose(CloseEvent e) {
 					// TODO Auto-generated method stub
 					if (null != hf.getHandlerInfo()) {
-						
+
 						removeHandlerItem(selectedhandler, tree);
 						// handlers.remove(selectedhandler);
 						addHandlerItem(hf.getHandlerInfo(), tree);
@@ -687,5 +643,99 @@ public class MainComponent extends CustomComponent {
 			});
 			getWindow().addWindow(hf);
 		}
+	}
+
+	private Set<HandlerInfo> LoadHandlers() {
+		Set<HandlerInfo> handlers = new HashSet<HandlerInfo>();
+		try {
+			// String[] objList = oClient.getContainerContents("TestTenant",
+			// "edt-testChain6");
+			logger.info("storlet loading");
+			String[] slList = oClient.getObjectIdsForMetadata(tenant,
+					currentContainer, SPEConstants.STORLET_TAG_TRIGGERS);
+			if (slList == null)
+				return handlers;
+
+			for (String slName : slList) {
+				logger.info(slName + " storlet loaded");
+				String outputs = oClient.getObjectMetadataEntry(tenant,
+						currentContainer, slName, "_slOutputs");
+				Trigger[] triggers = Trigger.createTriggers(oClient
+						.getObjectMetadataEntry(tenant, currentContainer,
+								slName, SPEConstants.STORLET_TAG_TRIGGERS));
+
+				if (triggers != null) {
+					JSONObject obj;
+					if (outputs != null) {
+						obj = JSONObject.fromObject(outputs);
+					} else {
+						obj = new JSONObject();
+					}
+					for (Trigger trigger : triggers) {
+						if (obj.containsKey(trigger.getHandlerID())) {
+							handlers.add(new HandlerInfo(slName, trigger
+									.getHandlerID(), trigger
+									.getTriggerEvaluator(), obj
+									.getString(trigger.getHandlerID()), false));
+						} else {
+							handlers.add(new HandlerInfo(slName, trigger
+									.getHandlerID(), trigger
+									.getTriggerEvaluator(), "oNA", false));
+						}
+					}
+				}
+			}
+		} catch (ContentCentricException e) {
+			// TODO Auto-generated catch block
+			logger.error("load handlers failed ", e);
+		}
+		return handlers;
+	}
+
+	public static Set<HandlerInfo> LoadLocalHandlers() throws IOException {
+		BufferedReader br;
+		String slName;
+		String inputExpr;
+		String outputExpr;
+		Set<HandlerInfo> handlers = new HashSet<HandlerInfo>();
+		// for (int i = 1; i <= num; ++i){
+		br = new BufferedReader(new FileReader("triggers/2.txt"));
+		// System.out.println("OK till here" + num);
+		while ((slName = br.readLine()) != null) {
+			
+			inputExpr = br.readLine();
+			outputExpr = br.readLine();
+			System.out.println("inputExpr " + inputExpr);
+			Trigger[] triggers = Trigger.createTriggers(inputExpr);
+
+			if (triggers != null) {
+				JSONObject obj;
+				if (outputExpr != null) {
+					System.out.println("output not null " + triggers.length);
+					obj = JSONObject.fromObject(outputExpr);
+				} else {
+					obj = new JSONObject();
+				}
+				for (Trigger trigger : triggers) {
+					if (obj.containsKey(trigger.getHandlerID())) {
+						System.out.println(slName);
+						handlers.add(new HandlerInfo(slName, trigger
+								.getHandlerID(), trigger.getTriggerEvaluator(),
+								obj.getString(trigger.getHandlerID()), false));
+					} else {
+						handlers.add(new HandlerInfo(slName, trigger
+								.getHandlerID(), trigger.getTriggerEvaluator(),
+								"oNA", false));
+					}
+				}
+
+			}
+			br.readLine();
+		}
+		// 
+		br.close();
+
+		// }
+		return handlers;
 	}
 }
