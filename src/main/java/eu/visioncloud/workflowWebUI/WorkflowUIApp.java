@@ -24,6 +24,7 @@ import eu.visioncloud.cci.client.*;
 import eu.visioncloud.storlet.common.AuthToken;
 import eu.visioncloud.workflow.constants.WorkflowMngConst;
 import eu.visioncloud.workflowengine.obj.LoginInfo;
+
 /**
  * The Application's "main" class
  */
@@ -32,27 +33,15 @@ public class WorkflowUIApp extends Application {
 	private Window window;
 	private MainComponent mainComponent;
 	private ClientInterface oClient;
-	
 
 	final static String storageServiceUrl = WorkflowMngConst.ccsURL;
 	private String tenant = "";
 	private String userId = "";
 	private String password = "";
-//	private final static String tenant = WorkflowMngConst.tenant;
-//	private final static String user = WorkflowMngConst.user;
-//	private final static String password = WorkflowMngConst.password;
+
+	private AuthToken auth;
 
 	private static final Logger logger = Logger.getLogger("workflowUIApp");
-//	static {
-//
-//		if (user != null && tenant != null && password != null) {
-//			AuthToken authToken = new AuthToken(user, tenant, password);
-//			oClient = new CdmiRestClient(storageServiceUrl,
-//					authToken.getAuthenticationString());
-//		} else {
-//			oClient = new CdmiRestClient(storageServiceUrl);
-//		}
-//	}
 
 	@Override
 	public void init() {
@@ -60,39 +49,44 @@ public class WorkflowUIApp extends Application {
 
 		setMainWindow(window);
 		final LoginForm lf = new LoginForm();
+		lf.setClosable(false);
 		lf.center();
 		lf.addListener(new Window.CloseListener() {
-			
+
 			@Override
 			public void windowClose(CloseEvent e) {
 				// TODO Auto-generated method stub
 				LoginInfo login = lf.getLoginInfo();
-				tenant = login.tenant;
-				userId = login.userId;
-				password = login.password;
-				initCCIClient();
-				if (oClient != null){
-					mainComponent = new MainComponent(tenant, oClient);
-					window.setContent(mainComponent);
-				}
-				else{
-					lf.showNotification("Invalid tenant name, user id or password");
-					lf.getApplication().close();
+				if (login != null) {
+					tenant = login.tenant;
+					userId = login.userId;
+					password = login.password;
+					auth = initCCIClient();
+					if (oClient != null) {
+						mainComponent = new MainComponent(tenant, auth, oClient);
+						window.setContent(mainComponent);
+					} else {
+						lf.showNotification("Invalid tenant name, user id or password");
+						lf.getApplication().close();
+					}
 				}
 			}
 		});
 		window.addWindow(lf);
 		setTheme("mytheme");
 	}
-	private void initCCIClient(){
+
+	private AuthToken initCCIClient() {
 		if (userId != "" && tenant != "" && password != "") {
-			AuthToken authToken = new AuthToken(userId, tenant, password);
+			AuthToken authToken = new AuthToken(tenant, userId, password);
 			oClient = new CdmiRestClient(storageServiceUrl,
 					authToken.getAuthenticationString());
+			return authToken;
 		} else {
-			//System.out.println("back door");
+			// System.out.println("back door");
 			oClient = new CdmiRestClient(storageServiceUrl);
+			return new AuthToken(tenant, "", "");
 		}
 	}
-	
+
 }

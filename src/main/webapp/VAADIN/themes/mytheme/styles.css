@@ -3,3 +3,7 @@
 .v-caption-my-style {
 	font-size: 18px;
 }
+
+textarea {
+   resize: none;
+}

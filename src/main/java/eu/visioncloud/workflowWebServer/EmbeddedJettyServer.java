@@ -54,10 +54,10 @@ public class EmbeddedJettyServer {
 		server.setStopAtShutdown(true);
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setContextPath("/workflowmanager/manage");
-		webAppContext.setDescriptor("src/main/webapp/WEB-INF/web.xml");//for test
-		webAppContext.setResourceBase("src/main/webapp");
-		//webAppContext.setDescriptor("webapp/WEB-INF/web.xml");// for deploy
-		//webAppContext.setResourceBase("webapp");
+		//webAppContext.setDescriptor("src/main/webapp/WEB-INF/web.xml");//for test
+		//webAppContext.setResourceBase("src/main/webapp");
+		webAppContext.setDescriptor("webapp/WEB-INF/web.xml");// for deploy
+		webAppContext.setResourceBase("webapp");
 
 		webAppContext.setParentLoaderPriority(true);
 		// server.setHandler(webAppContext);
@@ -70,7 +70,7 @@ public class EmbeddedJettyServer {
 		connector2.setHost("localhost");
 		connector2.setPort(port);
 		connector2.setThreadPool(new QueuedThreadPool(threadNum));
-		server.setConnectors(new Connector[] {connector2}); //connector1, 
+		server.setConnectors(new Connector[] {connector1, connector2}); //
 		StopHandler stopHandler = new StopHandler();
 
 		HandlerList handlers = new HandlerList();
