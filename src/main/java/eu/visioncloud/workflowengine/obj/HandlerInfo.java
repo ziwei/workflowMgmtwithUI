@@ -1,3 +1,6 @@
+/*
+ * Contains the information for a complete handler
+ */
 package eu.visioncloud.workflowengine.obj;
 
 import java.util.ArrayList;

@@ -1,3 +1,6 @@
+/*
+ * for extracting atoms
+ */
 package eu.visioncloud.workflowengine.obj;
 
 public class Attribute {

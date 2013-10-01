@@ -3,8 +3,11 @@ package eu.visioncloud.workflow.constants;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 public class WorkflowMngConst {
 	private static Properties prop = new Properties();
+	private static final Logger logger = Logger.getLogger("matcher");
 	// private static Properties logProp = new Properties();
 
 	static {
@@ -14,7 +17,7 @@ public class WorkflowMngConst {
 			// logProp.load(SREConst.class.getResourceAsStream("/log4j.properties"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("Load Configuration File Failed ", e);
 		}
 	}
 

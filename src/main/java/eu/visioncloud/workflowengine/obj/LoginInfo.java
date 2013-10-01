@@ -1,3 +1,6 @@
+/*
+ * Used by GUI, for login information
+ */
 package eu.visioncloud.workflowengine.obj;
 
 public class LoginInfo {

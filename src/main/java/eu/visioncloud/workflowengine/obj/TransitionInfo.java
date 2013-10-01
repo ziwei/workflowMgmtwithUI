@@ -1,3 +1,6 @@
+/*
+ * Objects for creating edges in graph
+ */
 package eu.visioncloud.workflowengine.obj;
 
 import java.util.ArrayList;

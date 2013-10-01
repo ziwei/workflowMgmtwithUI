@@ -1,3 +1,6 @@
+/*
+ * Read triggers for loading handlers from CCI Client
+ */
 package eu.visioncloud.workflowengine.obj;
 
 import java.io.IOException;

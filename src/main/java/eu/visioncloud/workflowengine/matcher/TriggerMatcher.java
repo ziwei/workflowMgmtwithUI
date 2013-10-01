@@ -1,3 +1,7 @@
+/*
+ * Entry point of workflow analysis engine, loop for any two trigger and output expressions
+ * , detect cycles and plot to image files
+ */
 package eu.visioncloud.workflowengine.matcher;
 
 import java.io.BufferedReader;
@@ -19,6 +23,7 @@ import orbital.logic.sign.ParseException;
 
 import java.util.regex.*;
 
+import org.apache.log4j.Logger;
 import org.jgrapht.GraphPath;
 
 import eu.visioncloud.workflowengine.obj.EvalConstruct;
@@ -27,7 +32,7 @@ import eu.visioncloud.workflowengine.obj.TransitionInfo;
 import eu.visioncloud.workflowengine.plotter.Plotter;
 
 public class TriggerMatcher {
-
+	private  final static Logger logger = Logger.getLogger("matcher");
 	public static byte[] TriggerMatch(Set<HandlerInfo> handlers) {
 		// int NUMBER = 5;
 		// TODO Auto-generated method stub
@@ -35,7 +40,7 @@ public class TriggerMatcher {
 		ExpressionMatcher em = new ExpressionMatcher();
 		GraphGenerator gg = new GraphGenerator();
 		Plotter plotter = new Plotter(gg.graph);
-
+		
 		// List<HandlerInfo> handlers = LoadHandlers();
 		gg.GenVertices(handlers);
 		for (HandlerInfo from : handlers) {
@@ -114,7 +119,7 @@ public class TriggerMatcher {
 				return em.Prove(axioms, from.getNewoExpr(), to.getNewiExpr());
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.info("IllegalArgument ",e);
 				return null;
 			}
 		} else

@@ -1,3 +1,6 @@
+/*
+ * Entry point for the service and Jetty server 
+ */
 package eu.visioncloud.workflowWebServer;
 
 import java.io.BufferedInputStream;
@@ -38,7 +41,7 @@ public class EmbeddedJettyServer {
 			emServer.run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("cannot start server", e);
 		}
 
 		PropertyConfigurator.configure(EmbeddedJettyServer.class
@@ -102,7 +105,7 @@ public class EmbeddedJettyServer {
 							server.stop();
 							logger.info("Jetty Server Stopped");
 						} catch (Exception ex) {
-							ex.printStackTrace();
+							logger.info("Jetty Server Cannot Stop ", ex);
 						}
 					}
 				}.start();
@@ -119,7 +122,7 @@ public class EmbeddedJettyServer {
 				throws IOException {
 			BufferedInputStream is = new BufferedInputStream(
 					new FileInputStream(WorkflowMngConst.logFilePath
-							.substring(1) + logName + ".log"));
+						+ logName + ".log"));
 			byte[] buf = new byte[4 * 1024]; // 4K buffer
 			int bytesRead;
 			while ((bytesRead = is.read(buf)) != -1) {

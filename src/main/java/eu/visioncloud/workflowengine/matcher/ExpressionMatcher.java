@@ -1,3 +1,7 @@
+/*
+ * Generate Axioms from the extracted atoms, transform trigger and output expressions into DNF
+ *  & CNF, check the implication is true or not
+ */
 package eu.visioncloud.workflowengine.matcher;
 
 import java.util.ArrayList;
@@ -7,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.*;
+
+import org.apache.log4j.Logger;
 
 import eu.visioncloud.workflowengine.obj.Attribute;
 import eu.visioncloud.workflowengine.obj.SpecAttribute;
@@ -20,11 +26,12 @@ import orbital.moon.logic.ClassicalLogic.InferenceMechanism;
 
 public class ExpressionMatcher {
 	public Logic logic = new ClassicalLogic();
-
+	private static final Logger logger = Logger.getLogger("JettyServer");
 	public ExpressionMatcher() {
 		// logic = new ClassicalLogic();
 	}
-
+	
+	//Determines if the output -> trigger is a complete, partial trigger or unrelated
 	public Map Prove(Formula[] axioms, String l, String r) {
 		Map res = new HashMap();
 		// System.out.println(l+" "+r);
@@ -73,10 +80,10 @@ public class ExpressionMatcher {
 				return res;
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.info("IllegalArgument ",e);
 				return null;
 			} catch (ParseException e) {
-				e.printStackTrace();
+				logger.info("Parse error ",e);
 				return null;
 			}
 		}
@@ -87,53 +94,7 @@ public class ExpressionMatcher {
 	public Formula[] AxiomsGen(List<Attribute> output, List<Attribute> input) {
 		ArrayList<Formula> statements = new ArrayList<Formula>();
 		for (Attribute iAttr : input) {
-			// if (iAttr.getClass().equals(SpecAttribute.class)){
-			// Attribute leftHigh = null;
-			// Attribute leftLow = null;
-			// Attribute rightHigh = null;
-			// Attribute rightLow = null;
-			// boolean isNotification = false;
-			// for(Attribute oAttr : output){
-			// if (!oAttr.getKey().equals("N/A")){
-			// if (oAttr.getKey().equals(iAttr.getKey())){
-			// if (leftHigh == null ||
-			// oAttr.getValue().compareTo(leftHigh.getValue()) > 0)
-			// leftHigh = oAttr;
-			// if (leftLow == null ||
-			// oAttr.getValue().compareTo(leftLow.getValue()) < 0)
-			// leftLow = oAttr;
-			// }
-			// if (oAttr.getKey().equals(iAttr.getValue())){
-			// if (rightHigh == null ||
-			// oAttr.getValue().compareTo(rightHigh.getValue()) > 0)
-			// rightHigh = oAttr;
-			// if (rightLow == null ||
-			// oAttr.getValue().compareTo(rightLow.getValue()) < 0)
-			// rightLow = oAttr;
-			// }
-			// }
-			// else {
-			// isNotification = true;break;
-			// }
-			// }
-			// if (isNotification == false){
-			// String res = ValueMatcher.SpecValueMatch(leftHigh, leftLow,
-			// rightHigh, rightLow, (SpecAttribute)iAttr);
-			// if (null != res){
-			// Formula axiom;
-			// try {
-			// axiom = (Formula)logic.createExpression(res);
-			// statements.add(axiom);
-			// } catch (IllegalArgumentException | ParseException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			//
-			// }
-			// }
-			//
-			// }
-			// else if(iAttr.getClass().equals(Attribute.class)){
+		
 			for (Attribute oAttr : output) {
 				if (oAttr.getKey().equals(iAttr.getKey())) {
 					String sameKeyState = ValueMatcher.ValueMatch(oAttr, iAttr);
@@ -146,9 +107,9 @@ public class ExpressionMatcher {
 							statements.add(fState);
 						} catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							logger.info("IllegalArgument ",e);
 						} catch (ParseException e) {
-							e.printStackTrace();
+							logger.info("Parse Error ",e);
 						}
 
 					}
@@ -176,9 +137,9 @@ public class ExpressionMatcher {
 			return dnf.toString();
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.info("IllegalArgument ",e);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.info("Parse Error ",e);
 		}
 		return null;
 	}

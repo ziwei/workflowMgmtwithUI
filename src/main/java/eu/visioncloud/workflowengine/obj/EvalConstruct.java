@@ -1,3 +1,7 @@
+/*
+ * extract atoms from both trigger and output expressions and generate new expressions
+ *  from original ones, atoms are replaced by their alias
+ */
 package eu.visioncloud.workflowengine.obj;
 
 import java.util.ArrayList;

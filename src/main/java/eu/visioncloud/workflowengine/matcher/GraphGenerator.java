@@ -1,3 +1,6 @@
+/*
+ * Generate Vertices and Edges, detect possible cycles
+ */
 package eu.visioncloud.workflowengine.matcher;
 
 import java.io.FileWriter;

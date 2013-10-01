@@ -1,3 +1,7 @@
+/*
+ * class for comparing two values if they share the same key,
+ * the values are together with their operator
+ */
 package eu.visioncloud.workflowengine.matcher;
 
 import java.util.List;

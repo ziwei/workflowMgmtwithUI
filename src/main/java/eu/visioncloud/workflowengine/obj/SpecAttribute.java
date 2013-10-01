@@ -1,3 +1,6 @@
+/*
+ * deprecated, initially for comparing two keys
+ */
 package eu.visioncloud.workflowengine.obj;
 
 public class SpecAttribute extends Attribute {

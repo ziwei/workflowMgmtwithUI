@@ -1,3 +1,6 @@
+/*
+ * transform JgraphT graph into a GraphViz graph, define format and decoration
+ */
 package eu.visioncloud.workflowengine.plotter;
 
 import java.io.File;

@@ -13,6 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
+/*
+ * Entry point for web application
+ */
 package eu.visioncloud.workflowWebUI;
 
 import org.apache.log4j.Logger;

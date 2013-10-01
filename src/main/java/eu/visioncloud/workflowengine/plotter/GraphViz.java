@@ -1,3 +1,6 @@
+/*
+ * 3rd party class, GraphViz API
+ */
 package eu.visioncloud.workflowengine.plotter;
 
 // GraphViz.java - a simple API to call dot from Java programs
@@ -32,6 +35,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+
+import org.apache.log4j.Logger;
 
 import eu.visioncloud.workflow.constants.WorkflowMngConst;
 
@@ -73,6 +78,7 @@ import eu.visioncloud.workflow.constants.WorkflowMngConst;
  *         href="jabba.laci@gmail.com">jabba.laci@gmail.com</a>)
  */
 public class GraphViz {
+	private static final Logger logger = Logger.getLogger("matcher");
 	/**
 	 * The dir. where temporary files will be created.
 	 */
@@ -232,11 +238,11 @@ public class GraphViz {
 					.println("Error:    in I/O processing of tempfile in dir "
 							+ GraphViz.TEMP_DIR + "\n");
 			System.err.println("       or in calling external command");
-			ioe.printStackTrace();
+			logger.info("Error:    in I/O processing of tempfile", ioe);
 		} catch (java.lang.InterruptedException ie) {
 			System.err
 					.println("Error: the execution of the external program was interrupted");
-			ie.printStackTrace();
+			logger.info("Error: the execution of the external program", ie);
 		}
 
 		return img_stream;

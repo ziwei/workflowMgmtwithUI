@@ -1,3 +1,7 @@
+/*
+ * Display after login, contains 2 tabs when initialized, 1 for InjectTab, the other for analysis
+ * config
+ */
 package eu.visioncloud.workflowWebUI;
 
 import java.awt.Color;
